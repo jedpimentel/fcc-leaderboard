@@ -27,46 +27,9 @@ function loadJSON(path, success, error) {
 	return;
 }
 
-function woot() {
-	console.log("test");
-	return;
-}
-
-var camperCell = React.createClass({
-	displayName: "camperCell",
-
-
-	render: function render() {
-		return React.createElement(
-			"div",
-			null,
-			React.createElement(
-				"a",
-				{ href: "#" },
-				React.createElement("img", { src: "#" }),
-				React.createElement(
-					"div",
-					null,
-					"NAME HERE"
-				)
-			)
-		);
-	}
-
-});
-
 var CamperRow = React.createClass({
 	displayName: "CamperRow",
 
-	getInitialState: function getInitialState() {
-		return {
-			position: '',
-			avatar: '',
-			username: '',
-			pointsIn30Days: '',
-			pointsAllTime: ''
-		};
-	},
 	render: function render() {
 		return React.createElement(
 			"tr",
@@ -74,51 +37,51 @@ var CamperRow = React.createClass({
 			React.createElement(
 				"td",
 				null,
-				"numer"
+				this.props.position
 			),
 			React.createElement(
 				"td",
 				null,
-				React.createElement("img", { src: "#" }),
-				"USERNAME"
+				React.createElement("img", { src: this.props.user.img })
 			),
 			React.createElement(
 				"td",
 				null,
-				"points a"
+				this.props.user.username
 			),
 			React.createElement(
 				"td",
 				null,
-				"points b"
+				this.props.user.recent
+			),
+			React.createElement(
+				"td",
+				null,
+				this.props.user.alltime
 			)
 		);
 	}
-
 });
 
-var LeaderBoardTable = React.createClass({
-	displayName: "LeaderBoardTable",
+var CamperData = React.createClass({
+	displayName: "CamperData",
 
 	getInitialState: function getInitialState() {
-		return {
-			displayData: [],
-			dataFrom30Days: [],
-			dataFromAllTime: []
-		};
+		return { setToDisplay: 'topRecent' };
 	},
-	componentDidMount: function componentDidMount() {
-		var topRecent = 'https://fcctop100.herokuapp.com/api/fccusers/top/recent';
-		var topAllTime = 'https://fcctop100.herokuapp.com/api/fccusers/top/alltime';
-		loadJSON(topRecent, function (response) {
-			this.setState({ displayData: response });
-			console.log(this);
-		}.bind(this));
-		loadJSON(topAllTime, function (response) {});
+	sortByRecent: function sortByRecent() {
+		console.log("clicked recent");
+		console.log(this.state);
+		this.setState({ setToDisplay: 'topRecent' });
+	},
+	sortByAllTime: function sortByAllTime() {
+		console.log("clicked recent");
+		this.setState({ setToDisplay: 'topAllTime' });
 	},
 	render: function render() {
-
-		var rowData = this.props.displayData.map(function (user, index) {
+		var rowData = '';
+		console.log("annaaan", this.props);
+		rowData = this.props.displayData[this.state.setToDisplay].map(function (user, index) {
 			return React.createElement(CamperRow, { user: user, position: index + 1 });
 		});
 		return React.createElement(
@@ -132,6 +95,7 @@ var LeaderBoardTable = React.createClass({
 					null,
 					"Position"
 				),
+				React.createElement("th", null),
 				React.createElement(
 					"th",
 					null,
@@ -139,19 +103,51 @@ var LeaderBoardTable = React.createClass({
 				),
 				React.createElement(
 					"th",
-					null,
+					{ onClick: this.sortByRecent },
 					"30-day point"
 				),
 				React.createElement(
 					"th",
-					null,
+					{ onClick: this.sortByAllTime },
 					"All time points"
 				)
 			),
 			rowData
 		);
 	}
+});
+
+var LeaderBoardTable = React.createClass({
+	displayName: "LeaderBoardTable",
+
+	getInitialState: function getInitialState() {
+		return {
+			topRecent: [],
+			topAllTime: []
+		};
+	},
+	loadUserDataFromApi: function loadUserDataFromApi() {
+		var topRecentURL = 'https://fcctop100.herokuapp.com/api/fccusers/top/recent';
+		var topAllTimeURL = 'https://fcctop100.herokuapp.com/api/fccusers/top/alltime';
+		loadJSON(topRecentURL, function (response) {
+			this.setState({ topRecent: response });
+			console.log("response was", response);
+			console.log("state", this.state);
+		}.bind(this));
+		loadJSON(topAllTimeURL, function (response) {
+			this.setState({ topAllTime: response });
+			console.log("state", this.state);
+		}.bind(this));
+	},
+	componentDidMount: function componentDidMount() {
+		console.log(this.state);
+		this.loadUserDataFromApi();
+	},
+	render: function render() {
+		console.log("woot", this);
+		return React.createElement(CamperData, { displayData: { topRecent: this.state.topRecent, topAllTime: this.state.topAllTime } });
+	}
 
 });
 
-ReactDOM.render(React.createElement(LeaderBoardTable, { displayData: [1, 2] }), document.getElementById('main'));
+ReactDOM.render(React.createElement(LeaderBoardTable, null), document.getElementById('main'));

@@ -1,6 +1,18 @@
 #main {
 	
+	tr {
+		height: 2em;
+	}
 	td {
+		height: 4em;
 		border: 1px solid black;
+		padding: 0;
+		
+		text-align: center;
+
+	}
+	img {
+		height: 100%;
+		vertical-align: middle;
 	}
 }

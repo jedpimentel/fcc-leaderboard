@@ -1,4 +1,12 @@
+#main tr {
+  height: 2em; }
 #main td {
-  border: 1px solid black; }
+  height: 4em;
+  border: 1px solid black;
+  padding: 0;
+  text-align: center; }
+#main img {
+  height: 100%;
+  vertical-align: middle; }
 
 /*# sourceMappingURL=sass.css.map */

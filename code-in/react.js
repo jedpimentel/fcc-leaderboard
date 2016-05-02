@@ -27,114 +27,111 @@ function loadJSON(path, success, error) {
 
 
 
- 
-
-
-function woot() {
-	console.log("test"); 
-	return;
-}
-
-
-
-
-var camperCell = React.createClass({
-	
-	render: function() {
-		return (
-			<div>
-				<a href='#'>
-					<img src='#' />
-					<div>NAME HERE</div>
-				</a>
-			</div>
-		);
-	}
-	
-});
-
 var CamperRow = React.createClass({
-	getInitialState: function() {
-		return {
-			position: '',
-			avatar: '',
-			username: '',
-			pointsIn30Days: '',
-			pointsAllTime: '',
-		};
-	},
 	render: function() {
 		return (
 			<tr>
 				<td>
-					numer
+				{this.props.position}
 				</td>
 				<td>
-					<img src='#' />
-					USERNAME
+					<img src={this.props.user.img} />
 				</td>
 				<td>
-					points a
+					{this.props.user.username}
 				</td>
 				<td>
-					points b
+					{this.props.user.recent}
+				</td>
+				<td>
+					{this.props.user.alltime}
 				</td>
 			</tr>
 		);
 	}
-	
+});
+
+
+var CamperData = React.createClass({
+	getInitialState: function() {
+		return (
+			{setToDisplay: 'topRecent'}
+		);
+	},
+	sortByRecent: function() {
+		console.log("clicked recent");
+		console.log(this.state);
+		this.setState({setToDisplay: 'topRecent'});
+	},
+	sortByAllTime: function() {
+		console.log("clicked recent");
+		this.setState({setToDisplay: 'topAllTime'});
+	},
+	render: function() {
+		var rowData = '';
+		console.log("annaaan", this.props);
+		rowData = this.props.displayData[this.state.setToDisplay].map(function(user, index) {
+			return (
+				<CamperRow user={user} position={index + 1} />
+			);
+		});
+		return (
+			<table>
+				<tr>
+					<th>Position</th>
+					<th></th>
+					<th>Username</th>
+					<th onClick={this.sortByRecent}>30-day point</th>
+					<th onClick={this.sortByAllTime}>All time points</th>
+				</tr>
+				{rowData}
+			</table>
+		);
+	}
 });
 
 
 var LeaderBoardTable = React.createClass({
 	getInitialState: function() {
 		return {
-			displayData: [],
-			dataFrom30Days: [],
-			dataFromAllTime: [],
+		topRecent: [],
+		topAllTime:	[]
 		};
 	},
-	componentDidMount: function() {
-		var topRecent = 'https://fcctop100.herokuapp.com/api/fccusers/top/recent';
-		var topAllTime = 'https://fcctop100.herokuapp.com/api/fccusers/top/alltime';
+	loadUserDataFromApi: function() {
+		var topRecentURL = 'https://fcctop100.herokuapp.com/api/fccusers/top/recent';
+		var topAllTimeURL = 'https://fcctop100.herokuapp.com/api/fccusers/top/alltime';
 		loadJSON(
-			topRecent,
+			topRecentURL,
 			function(response) {
-				this.setState({displayData: response});
-				console.log(this);
+				this.setState({topRecent: response});
+				console.log("response was", response);
+				console.log("state", this.state);
 			}.bind(this)
 		);
 		loadJSON(
-			topAllTime,
+			topAllTimeURL,
 			function(response) {
-				
-			}
+				this.setState({topAllTime: response});
+				console.log("state", this.state);
+			}.bind(this)
 		);
 	},
+	componentDidMount: function() {
+		console.log(this.state);
+		this.loadUserDataFromApi();
+	},
 	render: function() {
-		
-		var rowData = this.props.displayData.map(function(user, index) {
-			return (
-				<CamperRow user={user} position={index + 1} />
-			)
-		});
+		console.log("woot", this);
 		return (
-			<table>
-				<tr>
-					<th>Position</th>
-					<th>Username</th>
-					<th>30-day point</th>
-					<th>All time points</th>
-				</tr>
-				{rowData}
-			</table>
+			<CamperData displayData={{topRecent: this.state.topRecent, topAllTime: this.state.topAllTime}} />
 		);
 	}
 	
 });
 
 ReactDOM.render(
-	<LeaderBoardTable displayData={[1, 2]} />,
+	<LeaderBoardTable />,
 	document.getElementById('main')
 );
 
