@@ -33,30 +33,34 @@ var CamperRow = React.createClass({
 	render: function render() {
 		return React.createElement(
 			"tr",
-			null,
+			{ className: this.props.position % 2 === 1 ? 'odd-row' : 'even-row' },
 			React.createElement(
 				"td",
-				null,
+				{ className: "cell-position" },
 				this.props.position
 			),
 			React.createElement(
 				"td",
-				null,
+				{ className: "cell-avatar" },
 				React.createElement("img", { src: this.props.user.img })
 			),
 			React.createElement(
 				"td",
-				null,
-				this.props.user.username
+				{ className: "cell-username" },
+				React.createElement(
+					"a",
+					{ href: 'https://www.freecodecamp.com/' + this.props.user.username },
+					this.props.user.username
+				)
 			),
 			React.createElement(
 				"td",
-				null,
+				{ className: "cell-data" },
 				this.props.user.recent
 			),
 			React.createElement(
 				"td",
-				null,
+				{ className: "cell-data" },
 				this.props.user.alltime
 			)
 		);
@@ -79,6 +83,8 @@ var CamperData = React.createClass({
 		this.setState({ setToDisplay: 'topAllTime' });
 	},
 	render: function render() {
+		//bottom facing arrow used to clarify which data is sorted
+		var arrowDown = " ▼";
 		var rowData = '';
 		console.log("annaaan", this.props);
 		rowData = this.props.displayData[this.state.setToDisplay].map(function (user, index) {
@@ -93,7 +99,7 @@ var CamperData = React.createClass({
 				React.createElement(
 					"th",
 					null,
-					"Position"
+					"Pos."
 				),
 				React.createElement("th", null),
 				React.createElement(
@@ -103,13 +109,13 @@ var CamperData = React.createClass({
 				),
 				React.createElement(
 					"th",
-					{ onClick: this.sortByRecent },
-					"30-day point"
+					{ className: "sort-button cell-data", onClick: this.sortByRecent },
+					"30-days" + (this.state.setToDisplay === 'topRecent' ? arrowDown : '')
 				),
 				React.createElement(
 					"th",
-					{ onClick: this.sortByAllTime },
-					"All time points"
+					{ className: "sort-button cell-data", onClick: this.sortByAllTime },
+					"All-time" + (this.state.setToDisplay === 'topAllTime' ? arrowDown : '')
 				)
 			),
 			rowData
@@ -145,7 +151,16 @@ var LeaderBoardTable = React.createClass({
 	},
 	render: function render() {
 		console.log("woot", this);
-		return React.createElement(CamperData, { displayData: { topRecent: this.state.topRecent, topAllTime: this.state.topAllTime } });
+		return React.createElement(
+			"div",
+			null,
+			React.createElement(
+				"h1",
+				null,
+				"Free Code Camp Leaderboard"
+			),
+			React.createElement(CamperData, { displayData: { topRecent: this.state.topRecent, topAllTime: this.state.topAllTime } })
+		);
 	}
 
 });

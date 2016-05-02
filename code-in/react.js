@@ -30,20 +30,22 @@ function loadJSON(path, success, error) {
 var CamperRow = React.createClass({
 	render: function() {
 		return (
-			<tr>
-				<td>
+			<tr className={(this.props.position%2===1)?'odd-row':'even-row'}>
+				<td className='cell-position'>
 				{this.props.position}
 				</td>
-				<td>
+				<td className='cell-avatar'>
 					<img src={this.props.user.img} />
 				</td>
-				<td>
-					{this.props.user.username}
+				<td className='cell-username'>
+					<a href={'https://www.freecodecamp.com/' + this.props.user.username}>
+						{this.props.user.username}
+					</a>
 				</td>
-				<td>
+				<td className='cell-data'>
 					{this.props.user.recent}
 				</td>
-				<td>
+				<td className='cell-data'>
 					{this.props.user.alltime}
 				</td>
 			</tr>
@@ -68,6 +70,8 @@ var CamperData = React.createClass({
 		this.setState({setToDisplay: 'topAllTime'});
 	},
 	render: function() {
+		//bottom facing arrow used to clarify which data is sorted
+		var arrowDown = " ▼"
 		var rowData = '';
 		console.log("annaaan", this.props);
 		rowData = this.props.displayData[this.state.setToDisplay].map(function(user, index) {
@@ -78,11 +82,15 @@ var CamperData = React.createClass({
 		return (
 			<table>
 				<tr>
-					<th>Position</th>
+					<th>Pos.</th>
 					<th></th>
 					<th>Username</th>
-					<th onClick={this.sortByRecent}>30-day point</th>
-					<th onClick={this.sortByAllTime}>All time points</th>
+					<th className='sort-button cell-data' onClick={this.sortByRecent}>
+						{"30-days"+(this.state.setToDisplay==='topRecent'?arrowDown:'')}
+					</th>
+					<th className='sort-button cell-data' onClick={this.sortByAllTime}>
+						{"All-time"+(this.state.setToDisplay==='topAllTime'?arrowDown:'')}
+					</th>
 				</tr>
 				{rowData}
 			</table>
@@ -124,7 +132,10 @@ var LeaderBoardTable = React.createClass({
 	render: function() {
 		console.log("woot", this);
 		return (
-			<CamperData displayData={{topRecent: this.state.topRecent, topAllTime: this.state.topAllTime}} />
+			<div>
+				<h1>Free Code Camp Leaderboard</h1>
+				<CamperData displayData={{topRecent: this.state.topRecent, topAllTime: this.state.topAllTime}} />
+			</div>
 		);
 	}
 	

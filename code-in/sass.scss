@@ -1,18 +1,104 @@
+body {
+	text-align: center;
+	margin: 0;
+	padding: 0.2em;
+}
+
 #main {
+	text-align: center;
+
+	$strong-green: #006400;
+	$weak-green: #63c663;
+	$faint-green: #e6f4e6;
+	$faint-gray: #f4f4f4;
 	
+	$tablet-width: 768px;
+	
+	border: 2px solid $strong-green;
+	display: inline-block;
+
+	font-family: calibri;
+	.sort-button {
+		background-color: black;
+		color: $faint-green;
+		&:hover {
+			background-color: $faint-gray;
+			color: black;
+		}
+	}
 	tr {
+		
 		height: 2em;
 	}
+	th {
+		color: $strong-green;
+	}
 	td {
-		height: 4em;
+		height: 2em;
+		font-size: 1em;
 		border: 1px solid black;
 		padding: 0;
 		
 		text-align: center;
+		
+		@media (min-width: $tablet-width) {
+			font-size: 1.5em;
+		}
 
 	}
+	.cell-position {
+	
+	}
+	.cell-avatar {
+	
+	}
+	.cell-username {
+		/*min-width: 10em;*/
+		width: 15em;
+		a {
+			text-decoration: none;
+			color: $strong-green;
+			&:hover {
+				color: $weak-green;
+			}
+		}
+	}
+	.cell-data {
+		/* I had planned to use min-width, but then the point columns could end up with different widths */
+		width: 3em;
+	}
 	img {
-		height: 100%;
+		height: inherit;
+		
 		vertical-align: middle;
 	}
+	.odd-row {
+		background-color: $faint-green;
+	}
+	.even-row {
+		background-color: $faint-gray;
+	}
+	
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

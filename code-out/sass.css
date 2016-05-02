@@ -1,12 +1,49 @@
-#main tr {
-  height: 2em; }
-#main td {
-  height: 4em;
-  border: 1px solid black;
-  padding: 0;
-  text-align: center; }
-#main img {
-  height: 100%;
-  vertical-align: middle; }
+body {
+  text-align: center;
+  margin: 0;
+  padding: 0.2em; }
+
+#main {
+  text-align: center;
+  border: 2px solid #006400;
+  display: inline-block;
+  font-family: calibri; }
+  #main .sort-button {
+    background-color: black;
+    color: #e6f4e6; }
+    #main .sort-button:hover {
+      background-color: #f4f4f4;
+      color: black; }
+  #main tr {
+    height: 2em; }
+  #main th {
+    color: #006400; }
+  #main td {
+    height: 2em;
+    font-size: 1em;
+    border: 1px solid black;
+    padding: 0;
+    text-align: center; }
+    @media (min-width: 768px) {
+      #main td {
+        font-size: 1.5em; } }
+  #main .cell-username {
+    /*min-width: 10em;*/
+    width: 15em; }
+    #main .cell-username a {
+      text-decoration: none;
+      color: #006400; }
+      #main .cell-username a:hover {
+        color: #63c663; }
+  #main .cell-data {
+    /* I had planned to use min-width, but then the point columns could end up with different widths */
+    width: 3em; }
+  #main img {
+    height: inherit;
+    vertical-align: middle; }
+  #main .odd-row {
+    background-color: #e6f4e6; }
+  #main .even-row {
+    background-color: #f4f4f4; }
 
 /*# sourceMappingURL=sass.css.map */
