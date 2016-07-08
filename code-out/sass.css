@@ -9,6 +9,7 @@ body {
   display: inline-block;
   font-family: calibri; }
   #main .sort-button {
+    cursor: pointer;
     background-color: black;
     color: #e6f4e6; }
     #main .sort-button:hover {
@@ -17,11 +18,14 @@ body {
   #main tr {
     height: 2em; }
   #main th {
+    height: 2.4em;
     color: #006400; }
   #main td {
     height: 2em;
     font-size: 1em;
-    border: 1px solid black;
+    border: 1px solid #006400;
+    border-radius: 0.125em;
+    overflow: hidden;
     padding: 0;
     text-align: center; }
     @media (min-width: 768px) {
